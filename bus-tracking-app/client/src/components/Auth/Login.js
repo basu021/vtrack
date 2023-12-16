@@ -1,37 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from 'react-router-dom';
-
+import { useHistory, Route, Switch } from "react-router-dom";
+import ForgotPassword from "./ForgotPassword";
 import $ from "jquery";
 
 export const Login = () => {
-
   const [showPassword, setShowPassword] = useState(false);
-  const [inputPassword, setInputPassword] = useState(''); // Renamed to inputPassword
-
 
   useEffect(() => {
     const handlePasswordToggle = () => {
-      const passwordInput = document.getElementById('inputChoosePassword');
-      const passwordIcon = document.querySelector('#show_hide_password i');
+      const passwordInput = document.getElementById("inputChoosePassword");
+      const passwordIcon = document.querySelector("#show_hide_password i");
 
-      if (passwordInput.type === 'password') {
-        passwordInput.type = 'text';
-        passwordIcon.classList.remove('bx-hide');
-        passwordIcon.classList.add('bx-show');
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        passwordIcon.classList.remove("bx-hide");
+        passwordIcon.classList.add("bx-show");
       } else {
-        passwordInput.type = 'password';
-        passwordIcon.classList.remove('bx-show');
-        passwordIcon.classList.add('bx-hide');
+        passwordInput.type = "password";
+        passwordIcon.classList.remove("bx-show");
+        passwordIcon.classList.add("bx-hide");
       }
     };
 
-    const passwordInput = document.getElementById('inputChoosePassword');
-    const passwordIcon = document.querySelector('#show_hide_password i');
+    const passwordIcon = document.querySelector("#show_hide_password i");
 
-    passwordIcon.addEventListener('click', handlePasswordToggle);
+    passwordIcon.addEventListener("click", handlePasswordToggle);
 
     return () => {
-      passwordIcon.removeEventListener('click', handlePasswordToggle);
+      passwordIcon.removeEventListener("click", handlePasswordToggle);
     };
   }, []);
 
@@ -43,41 +39,41 @@ export const Login = () => {
     setPassword(e.target.value);
   };
   useEffect(() => {
-    const themeSwitchers = document.querySelectorAll('.switcher-wrapper li');
-    const switcherWrapper = document.querySelector('.switcher-wrapper');
+    const themeSwitchers = document.querySelectorAll(".switcher-wrapper li");
+    const switcherWrapper = document.querySelector(".switcher-wrapper");
 
     themeSwitchers.forEach((themeSwitcher) => {
-      themeSwitcher.addEventListener('click', () => {
+      themeSwitcher.addEventListener("click", () => {
         const themeNumber = themeSwitcher.id.slice(5); // Extract the theme number
         document.body.className = `bg-theme bg-theme${themeNumber}`;
       });
     });
 
-    const toggleSwitcher = document.querySelector('.switcher-btn');
-    const closeSwitcher = document.querySelector('.close-switcher');
+    const toggleSwitcher = document.querySelector(".switcher-btn");
+    const closeSwitcher = document.querySelector(".close-switcher");
 
-    toggleSwitcher.addEventListener('click', () => {
-      switcherWrapper.classList.toggle('switcher-toggled');
+    toggleSwitcher.addEventListener("click", () => {
+      switcherWrapper.classList.toggle("switcher-toggled");
     });
 
-    closeSwitcher.addEventListener('click', () => {
-      switcherWrapper.classList.remove('switcher-toggled');
+    closeSwitcher.addEventListener("click", () => {
+      switcherWrapper.classList.remove("switcher-toggled");
     });
   }, []);
 
   // for login Functionality
-  const [loginId, setLoginId] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [loginId, setLoginId] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const history = useHistory();
   const [user, setUser] = useState(null); // Add this line
 
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
+      const response = await fetch("http://localhost:5000/auth/login", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           login_id: loginId,
@@ -96,13 +92,13 @@ export const Login = () => {
         setUser({ id, email, role_id });
 
         // Redirect to the landing page or any other page based on your logic
-        history.push('/landing');
+        history.push("/landing");
       } else {
-        // Login failed or user do                                                                        es not have a role
-        setError('Invalid Details');
+        // Login failed or user does not have a role
+        setError("Invalid Details");
       }
     } catch (error) {
-      console.error('API error:', error);
+      console.error("API error:", error);
       // setError('Internal server error');
       // display actual error
       setError(error.message);
@@ -141,7 +137,9 @@ export const Login = () => {
                       <div className="text-center mb-4">
                         <h5 className="">Travel Desk</h5>
                         <p className="mb-0">Please log in to your account</p>
-                        <p>{error && <p style={{ color: 'red' }}>{error}</p>}</p>
+                        <p>
+                          {error && <p style={{ color: "red" }}>{error}</p>}
+                        </p>
                       </div>
                       <div className="form-body">
                         <div className="row g-3">
@@ -162,12 +160,18 @@ export const Login = () => {
                             />
                           </div>
                           <div className="col-12">
-                            <label htmlFor="inputChoosePassword" className="form-label">
+                            <label
+                              htmlFor="inputChoosePassword"
+                              className="form-label"
+                            >
                               Password
                             </label>
-                            <div className="input-group" id="show_hide_password">
+                            <div
+                              className="input-group"
+                              id="show_hide_password"
+                            >
                               <input
-                                type={showPassword ? 'text' : 'password'}
+                                type={showPassword ? "text" : "password"}
                                 className="form-control border-end-0"
                                 id="inputChoosePassword"
                                 value={password}
@@ -177,8 +181,16 @@ export const Login = () => {
                                 }}
                                 placeholder="Enter Password"
                               />
-                              <a href="javascript:;" className="input-group-text bg-transparent" onClick={handleTogglePassword}>
-                                <i className={showPassword ? 'bx bx-show' : 'bx bx-hide'}></i>
+                              <a
+                                href="javascript:;"
+                                className="input-group-text bg-transparent"
+                                onClick={handleTogglePassword}
+                              >
+                                <i
+                                  className={
+                                    showPassword ? "bx bx-show" : "bx bx-hide"
+                                  }
+                                ></i>
                               </a>
                             </div>
                           </div>
@@ -205,7 +217,11 @@ export const Login = () => {
                           </div>
                           <div className="col-12">
                             <div className="d-grid">
-                              <button type="submit" onClick={handleLogin} className="btn btn-light">
+                              <button
+                                type="submit"
+                                onClick={handleLogin}
+                                className="btn btn-light"
+                              >
                                 Sign in
                               </button>
                             </div>
@@ -214,7 +230,7 @@ export const Login = () => {
                             <div className="text-center">
                               <p className="mb-0">
                                 Don't have an account yet?{" "}
-                                <a href="auth-cover-signup.html">
+                                <a href="/signup">
                                   Sign up here
                                 </a>
                               </p>
@@ -262,12 +278,18 @@ export const Login = () => {
         </div>
       </div>
       <div className="switcher-wrapper">
-        <div className="switcher-btn"> <i className='bx bx-cog bx-spin'></i>
+        <div className="switcher-btn">
+          {" "}
+          <i className="bx bx-cog bx-spin"></i>
         </div>
         <div className="switcher-body">
           <div className="d-flex align-items-center">
             <h5 className="mb-0 text-uppercase">Theme Customizer</h5>
-            <button type="button" className="btn-close ms-auto close-switcher" aria-label="Close"></button>
+            <button
+              type="button"
+              className="btn-close ms-auto close-switcher"
+              aria-label="Close"
+            ></button>
           </div>
           <hr />
           <p className="mb-0">Gaussian Texture</p>

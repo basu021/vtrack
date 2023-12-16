@@ -21,4 +21,14 @@ module.exports = {
       throw error;
     }
   },
+  getRoles: async () => {
+    try {
+      const result = await pool.query('SELECT * FROM roles WHERE role_name IN ($1, $2)', ['user', 'driver']);
+      return result.rows;
+    } catch (error) {
+      // Handle or log the error here
+      console.error("Error in getRoles:", error.message);
+      throw error;
+    }
+  },
 };
