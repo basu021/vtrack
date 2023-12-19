@@ -76,7 +76,7 @@ export const SignUp = () => {
         console.error('Signup failed:', response.data.message);
         // Handle the error or display an error message
         setError(response.data.message || "Signup failed. Please check your details"); // Set the error message
-        toast.err(response.data.message, {
+        toast.error(response.data.message, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,

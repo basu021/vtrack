@@ -38,14 +38,21 @@ module.exports = {
       const user = await usersModel.getUserByLoginId(login_id);
 
       console.log('User:', user);
-      checkdata = {
-        sentPass: password,
-        cryptpass: user.password_hash,
-      };
+      // checkdata = {
+      //   sentPass: password,
+      //   cryptpass: user.password_hash,
+      // };
 
       if (!user || !(await bcrypt.compare(password, user.password_hash))) {
         console.log('Invalid credentials');
         return res.status(401).json({ message: 'Invalid credentials' });
+      }
+
+
+      // check if user account is active or not.
+      if (!user.is_active) {
+        console.log('User account is not active');
+        return res.status(401).json({ message: 'User account is not active' });
       }
 
       const roleId = await rolesModel.getRoleIdByName('user'); // Adjust based on your roles

@@ -1,0 +1,1 @@
+sudo mount -t cifs //10.150.228.85/osdc/MYSQL/10.150.150.46 /home/centos/osdc-db-backup/MySQL/backup/10.150.150.46 -o username=altadmin,password=Welc0me1@3,uid=1000,file_mode=0664,dir_mode=0775

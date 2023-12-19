@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useHistory, Route, Switch } from "react-router-dom";
 import ForgotPassword from "./ForgotPassword";
 import $ from "jquery";
+import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -95,13 +98,21 @@ export const Login = () => {
         history.push("/landing");
       } else {
         // Login failed or user does not have a role
-        setError("Invalid Details");
+        // setError(data.message || "Invalid Details");
+        toast.error(data.message || "Invalid Details", {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
     } catch (error) {
       console.error("API error:", error);
-      // setError('Internal server error');
-      // display actual error
-      setError(error.message);
+      setError(error.message || "Internal server error client");
     }
   };
   return (
@@ -122,7 +133,6 @@ export const Login = () => {
                   </div>
                 </div>
               </div>
-
               <div className="col-12 col-xl-5 col-xxl-4 auth-cover-right bg-light align-items-center justify-content-center">
                 <div className="card rounded-0 m-3 shadow-none bg-transparent mb-0">
                   <div className="card-body p-sm-5">
@@ -140,6 +150,7 @@ export const Login = () => {
                         <p>
                           {error && <p style={{ color: "red" }}>{error}</p>}
                         </p>
+                        <ToastContainer />
                       </div>
                       <div className="form-body">
                         <div className="row g-3">
@@ -154,7 +165,7 @@ export const Login = () => {
                               type="text"
                               className="form-control"
                               id="inputEmailAddress"
-                              placeholder="ex@jindalstainless.com"
+                              placeholder="ex@company.com"
                               value={loginId}
                               onChange={(e) => setLoginId(e.target.value)}
                             />

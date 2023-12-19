@@ -1,0 +1,10 @@
+curl -X GET "http://localhost:5000/auth/verify?token=#"  <-- Verify token api
+
+curl -X POST -H "Content-Type: application/json" -d '{"login_id": "", "password": ""}' http://localhost:5000/auth/login  <--- Login Check
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+curl -X POST -H "Content-Type: application/json" -d '{"login_id": "basu", "password": "Basu2001@@"}' http://localhost:5000/auth/login  

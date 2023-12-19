@@ -1,35 +1,53 @@
 // components/Auth/ForgotPassword.js
 import React, { useState } from 'react';
+import ThemeSwitcher from '../../utils/Theme';
 import authService from '../../services/authService'; // Import your authentication service
 
 function ForgotPassword() {
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-
-  const handleForgotPassword = async () => {
-    try {
-      // Call your authentication service function for password reset
-      await authService.forgotPassword(email);
-      setMessage('Password reset instructions sent to your email.');
-    } catch (error) {
-      setMessage('Error: Unable to send reset instructions. Please try again.');
-      console.error('Forgot Password Error:', error);
-    }
-  };
-
   return (
-    <div>
-      <h2>Forgot Password</h2>
-      <p>Enter your email address to receive password reset instructions.</p>
-      
-      <div>
-        <label>Email:</label>
-        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      </div>
-      
-      <button onClick={handleForgotPassword}>Reset Password</button>
+    <div className="bg-theme bg-theme1">
+      <div className="wrapper">
+        <div className="section-authentication-cover">
+          <div className="">
+            <div className="row g-0">
+              <div className="col-12 col-xl-7 col-xxl-8 auth-cover-left align-items-center justify-content-center d-none d-xl-flex">
+                <div className="card shadow-none bg-transparent shadow-none rounded-0 mb-0">
+                  <div className="card-body">
+                    <img src="assets/images/login-images/forgot-password-cover.svg" className="img-fluid" width="600" alt="" />
+                  </div>
+                </div>
+              </div>
+              <div className="col-12 col-xl-5 col-xxl-4 auth-cover-right bg-light align-items-center justify-content-center">
+                <div className="card rounded-0 m-3 shadow-none bg-transparent mb-0">
+                  <div className="card-body p-sm-5">
+                    <div className="p-3">
+                      <div className="text-center">
+                        <img src="assets/images/icons/forgot-2.png" width="100" alt="" />
+                      </div>
+                      <h4 className="mt-5 font-weight-bold">Forgot Password?</h4>
+                      <p className="text-muted">Enter your registered email ID to reset the password</p>
+                      <div className="my-4">
+                        <label className="form-label">Email id</label>
+                        <input type="text" className="form-control" placeholder="example@user.com" />
+                      </div>
+                      <div className="d-grid gap-2">
+                        <button type="button" className="btn btn-white">Send</button>
+                        <a href="auth-cover-signin.html" className="btn btn-light"><i className='bx bx-arrow-back me-1'></i>Back to
+                          Login</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-      {message && <p>{message}</p>}
+            </div>
+            {/* end row */}
+          </div>
+        </div>
+      </div>
+      {/* end wrapper*/}
+      {/* start switcher*/}
+      <ThemeSwitcher/>
     </div>
   );
 }
