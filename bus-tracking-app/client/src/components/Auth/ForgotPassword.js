@@ -1,7 +1,6 @@
 // components/Auth/ForgotPassword.js
 import React, { useState } from 'react';
-import ThemeSwitcher from '../../utils/Theme';
-import authService from '../../services/authService'; // Import your authentication service
+import Theme from '../../utils/Theme';
 
 function ForgotPassword() {
   return (
@@ -46,8 +45,7 @@ function ForgotPassword() {
         </div>
       </div>
       {/* end wrapper*/}
-      {/* start switcher*/}
-      <ThemeSwitcher/>
+      <Theme/>
     </div>
   );
 }

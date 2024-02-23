@@ -9,24 +9,6 @@ const pool = new Pool({
   port: 5444,
 });
 
-// module.exports = {
-//   getUserByEmail: async (email) => {
-//     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-//     return result.rows.length > 0 ? result.rows[0] : null;
-//   },
-// getUserByLoginId: async (loginId) => {
-//     const result = await pool.query('SELECT * FROM login WHERE login_id = $1', [loginId]);
-//     return result.rows.length > 0 ? result.rows[0] : null;
-//   },
-//   createUser: async (user) => {
-//     const { login_id, password, role_id } = user;
-//     const result = await pool.query(
-//       'INSERT INTO users (login_id, password, role_id) VALUES ($1, $2, $3) RETURNING *',
-//       [login_id, password, role_id]
-//     );
-//     return result.rows[0];
-//   },
-// };
 
 module.exports = {
   getUserByEmail: async (email) => {
@@ -41,6 +23,17 @@ module.exports = {
   getUserByLoginId: async (login_id) => {
     try {
       const result = await pool.query('SELECT * FROM login WHERE login_id = $1', [login_id]);
+      console.log('Number of rows:', result.rows.length);
+      console.log('First row:', result.rows[0]);
+      return result.rows.length > 0 ? result.rows[0] : null;
+    } catch (error) {
+      console.error('Error fetching user by login ID:', error.message);
+      throw new Error('Internal server error: ' + error.message);
+    }
+  },
+  getUserByUserId: async (user_id) => {
+    try {
+      const result = await pool.query('SELECT * FROM login WHERE user_id = $1', [user_id]);
       console.log('Number of rows:', result.rows.length);
       console.log('First row:', result.rows[0]);
       return result.rows.length > 0 ? result.rows[0] : null;
@@ -97,7 +90,81 @@ module.exports = {
       throw error;
     }
     // The function parameter should be an object containing the properties of the user that you want to add/update.
+  },
+  forgotPassword: async (userId, updateData) => {
+    try {
+      // const { reset_token, reset_token_expiry } = updateData;
+      const reset_token = updateData.reset_password_token;
+      const reset_token_expiry = updateData.reset_password_token_expiry;
+      console.log(updateData);
+      console.log(reset_token);
+      console.log(reset_token_expiry);
+  
+      const query = `
+        INSERT INTO password_reset (user_id, reset_token, reset_token_expiry)
+        VALUES ($1, $2, $3)
+        ON CONFLICT (user_id)
+        DO UPDATE SET reset_token = $2, reset_token_expiry = $3
+        RETURNING *;
+      `;
+  
+      const values = [userId, reset_token, reset_token_expiry];
+  
+      const result = await pool.query(query, values);
+  
+      if (result.rows.length === 0) {
+        throw new Error('User not found');
+      }
+  
+      return result.rows[0];
+    } catch (error) {
+      console.error('Error updating user:', error.message);
+      throw error;
+    }
+  },
+  getUserByResetToken: async (resetToken) => {
+    console.log("Reset token um: " + resetToken);
+  
+    const values = [resetToken];
+    console.log("Values "+values);
+  
+    const result = await pool.query('SELECT * FROM password_reset;');
 
+    console.log("Result from database:", result);
+  
+    if (result.rows.length === 0) {
+      return null;
+    }
+  
+    const userId = result.rows[0].user_id;
+    console.log("User id is " + userId);
+  
+    // Replace the following line with the appropriate function to get a user by ID
+    const user = await module.exports.getUserByUserId(userId);
+  
+    console.log("User retrieved:", user);
+  
+    if (!user) {
+      throw new Error('User not found');
+      // console.log("User Not found");
+    }
+  
+    return user;
+  },
+  
+
+  updatePassword: async (userId, newPassword) => {
+    const query = 'UPDATE login SET password_hash = $1 WHERE user_id = $2;';
+    const values = [newPassword, userId];
+
+    await pool.query(query, values);
+  },
+
+  deleteResetToken: async (userId) => {
+    const query = 'DELETE FROM password_reset WHERE user_id = $1;';
+    const values = [userId];
+
+    await pool.query(query, values);
   },
   
 };

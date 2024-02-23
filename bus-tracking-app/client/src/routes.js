@@ -13,7 +13,6 @@ const routes = [
   { path: '/Log', component: Log },
   { path: '/forgot_password', component: ForgotPassword},
   { path: '/verify_email', component: EmailVerification }, 
-  { }
 ];
 
 export default routes;

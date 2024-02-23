@@ -10,8 +10,14 @@ router.post('/login', authController.login);
 // Route for user signup
 router.post('/signup', authController.signup);
 
-// Add a new route in authRoutes.js
+// Email Verify
 router.get('/verify', authController.verifyEmail);
+
+// Forget Password
+router.post('/forgot-password', authController.forgotPassword)
+
+// Reset password from mail link
+router.post('/reset-password', authController.resetPassword);
 
 // Get Roles
 router.get('/getroles', (req, res) => authController.getRoles(req, res));

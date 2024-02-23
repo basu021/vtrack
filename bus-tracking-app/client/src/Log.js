@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useHistory, Route, Switch } from "react-router-dom";
 import $ from "jquery";
-import { ToastContainer } from 'react-toastify';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
-export const Login = () => {
+export const Theme = () => {
 
   
   useEffect(() => {
@@ -85,4 +81,4 @@ export const Login = () => {
   );
 };
 
-export default Login;
+export default Theme;

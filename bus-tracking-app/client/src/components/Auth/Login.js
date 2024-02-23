@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory, Route, Switch } from "react-router-dom";
 import ForgotPassword from "./ForgotPassword";
 import $ from "jquery";
+import Theme from '../../utils/Theme';
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -41,28 +42,6 @@ export const Login = () => {
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  useEffect(() => {
-    const themeSwitchers = document.querySelectorAll(".switcher-wrapper li");
-    const switcherWrapper = document.querySelector(".switcher-wrapper");
-
-    themeSwitchers.forEach((themeSwitcher) => {
-      themeSwitcher.addEventListener("click", () => {
-        const themeNumber = themeSwitcher.id.slice(5); // Extract the theme number
-        document.body.className = `bg-theme bg-theme${themeNumber}`;
-      });
-    });
-
-    const toggleSwitcher = document.querySelector(".switcher-btn");
-    const closeSwitcher = document.querySelector(".close-switcher");
-
-    toggleSwitcher.addEventListener("click", () => {
-      switcherWrapper.classList.toggle("switcher-toggled");
-    });
-
-    closeSwitcher.addEventListener("click", () => {
-      switcherWrapper.classList.remove("switcher-toggled");
-    });
-  }, []);
 
   // for login Functionality
   const [loginId, setLoginId] = useState("");
@@ -288,49 +267,7 @@ export const Login = () => {
           </div>
         </div>
       </div>
-      <div className="switcher-wrapper">
-        <div className="switcher-btn">
-          {" "}
-          <i className="bx bx-cog bx-spin"></i>
-        </div>
-        <div className="switcher-body">
-          <div className="d-flex align-items-center">
-            <h5 className="mb-0 text-uppercase">Theme Customizer</h5>
-            <button
-              type="button"
-              className="btn-close ms-auto close-switcher"
-              aria-label="Close"
-            ></button>
-          </div>
-          <hr />
-          <p className="mb-0">Gaussian Texture</p>
-          <hr />
-
-          <ul className="switcher">
-            <li id="theme1"></li>
-            <li id="theme2"></li>
-            <li id="theme3"></li>
-            <li id="theme4"></li>
-            <li id="theme5"></li>
-            <li id="theme6"></li>
-          </ul>
-          <hr />
-          <p className="mb-0">Gradient Background</p>
-          <hr />
-
-          <ul className="switcher">
-            <li id="theme7"></li>
-            <li id="theme8"></li>
-            <li id="theme9"></li>
-            <li id="theme10"></li>
-            <li id="theme11"></li>
-            <li id="theme12"></li>
-            <li id="theme13"></li>
-            <li id="theme14"></li>
-            <li id="theme15"></li>
-          </ul>
-        </div>
-      </div>
+      <Theme/>
     </div>
   );
 };

@@ -175,5 +175,85 @@ module.exports = {
       res.status(500).json({ message: 'Internal server error' });
     }
   },
+  forgotPassword: async (req, res) => {
+
+    const data = req.body;
+
+    console.log(data.email);
+
+    try {
+      const user = await usersModel.getUserByEmail(data.email);
+      if (!user) {
+        return res.status(400).json({ message: 'User does not exist' });
+      }
+      const token = crypto.randomBytes(32).toString('hex');
+      const hashedToken = await bcrypt.hash(token, 10);
+      // const hashedToken = token;
+
+      // Create a new Date object and add one hour
+      const expiryDate = new Date();
+      expiryDate.setTime(expiryDate.getTime() + 3600000); // 1 hour
+
+      const updatedUser = await usersModel.forgotPassword(user.user_id, {
+        reset_password_token: hashedToken,
+        reset_password_token_expiry: expiryDate,
+      });
+
+      const resetLink = `${process.env.FRONTEND_URL}/reset-password?token=${token}&userId=${user.user_id}`;
+      console.log("Reset Link: " + resetLink);
+      console.log("User Id: " + user.user_id);
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: data.email,
+        subject: 'Password Reset',
+        html: `Click <a href="${resetLink}">here</a> to reset your password.`,
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log('Password reset email error:', error);
+        } else {
+          console.log('Password reset email sent:', info.response);
+        }
+      });
+      res.json({ message: 'Password reset email sent successfully' });
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+
+  },
+  resetPassword: async (req, res) => {
+    const { token, newPassword } = req.body;
+
+    console.log("Token: " + token);
+    console.log("New Pass: " + newPassword);
+
+    try {
+      const user = await usersModel.getUserByResetToken(token);
+
+      console.log("User from auth controller");
+      console.log(user);
+
+      if (!user || !(await bcrypt.compare(token, user.reset_password_token))) {
+        return res.status(400).json({ message: 'Invalid or expired token' });
+      }
+
+      // Update the user's password
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+      console.log("User ID to be updated: " + user.user_id);
+      console.log("Hashed password to be updated: " + hashedPassword);
+
+      // Update the password using the actual stored hashed token for comparison
+      await usersModel.updatePassword(user.user_id, hashedPassword, user.reset_password_token);
+
+      // Delete the reset token from the password_reset table
+      await usersModel.deleteResetToken(user.user_id);
+
+      res.json({ message: 'Password reset successful' });
+    } catch (error) {
+      console.error('Reset password error:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  },
 
 };

@@ -5,6 +5,7 @@ import axios from 'axios'; // axios for API calls
 import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Theme from '../../utils/Theme';
 
 export const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -273,6 +274,7 @@ export const SignUp = () => {
             {/*end row*/} </div>
         </div>
       </div>
+      <Theme/>
       {/*end wrapper*/} </div>
   );
 };

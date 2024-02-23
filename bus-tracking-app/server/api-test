@@ -2,9 +2,14 @@ curl -X GET "http://localhost:5000/auth/verify?token=#"  <-- Verify token api
 
 curl -X POST -H "Content-Type: application/json" -d '{"login_id": "", "password": ""}' http://localhost:5000/auth/login  <--- Login Check
 
+curl -X POST -H "Content-Type: application/json" -d '{"email": "basudevrout2001@gmail.com"}' http://localhost:5000/auth/forgot-password
 
+curl -X POST -H "Content-Type: application/json" -d '{"token": "ae907865ca1529aba6214c8341a7847fc4e3b5f4c0a5435bf982d567dbb97fbd", "newPassword": "Basu2001@@"}' http://localhost:5000/auth/reset-password
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
 curl -X POST -H "Content-Type: application/json" -d '{"login_id": "basu", "password": "Basu2001@@"}' http://localhost:5000/auth/login  
+
+curl -X POST -H "Content-Type: application/json" -d '{"token": "5a9fb8b3b18a33155c48e9a38c66a1f80cbd62598cfccaf1cc7253b299e7f2ed", "newPassword": "Basu200d1@@"}' http://localhost:5000/auth/reset-password
+
